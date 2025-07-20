@@ -19,10 +19,10 @@ export default function RulesPage() {
             </h2>
             <ul className="list-disc list-inside text-gray-700 space-y-1">
               <li>
-                <strong>Two 30-minute halves</strong>
+                <strong>Two 15-minute halves</strong>
               </li>
               <li>
-                <strong>10-minute halftime</strong>
+                <strong>5-minute halftime</strong>
               </li>
               <li>3 timeouts per team per game (1 minute each)</li>
               <li>College OT format starting from the 30-yard line</li>
@@ -42,7 +42,7 @@ export default function RulesPage() {
             </h2>
             <ul className="list-disc list-inside text-gray-700 space-y-1">
               <li>
-                <strong>20-second play clock after the ball is spotted</strong>
+                <strong>10-second play clock after the ball is spotted</strong>
               </li>
               <li>
                 <strong>
@@ -106,7 +106,9 @@ export default function RulesPage() {
                 on their 25.
               </li>
               <li>
-                <strong>Tied records are broken by point differential</strong>
+                <strong>
+                  Tied league points are broken by wins then point differential.
+                </strong>
               </li>
             </ul>
           </div>
