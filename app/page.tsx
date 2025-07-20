@@ -52,6 +52,14 @@ export default function Home() {
               Private league control panel
             </p>
           </Link>
+
+          <Link
+            href="/rules"
+            className="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
+          >
+            <h2 className="text-xl font-bold text-red-600">Rules</h2>
+            <p className="text-sm text-gray-600">View league rules & format</p>
+          </Link>
         </div>
       </div>
     </main>
