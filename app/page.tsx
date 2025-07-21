@@ -1,6 +1,38 @@
 import Link from "next/link";
 
 export default function Home() {
+  const showSite = process.env.NEXT_PUBLIC_SHOW_SITE === "true";
+
+  if (!showSite) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-black via-gray-900 to-zinc-800 text-white relative overflow-hidden">
+        {/* Background Rings */}
+        <div
+          className="absolute w-[800px] h-[800px] bg-gradient-to-tr from-yellow-400 via-red-500 to-pink-500 rounded-full blur-3xl opacity-20 animate-pulse"
+          style={{ top: "-20%", left: "-20%" }}
+        ></div>
+        <div
+          className="absolute w-[600px] h-[600px] bg-gradient-to-tr from-blue-400 to-purple-600 rounded-full blur-3xl opacity-20 animate-pulse"
+          style={{ bottom: "-20%", right: "-10%" }}
+        ></div>
+
+        <div className="z-10 text-center px-6">
+          <h1 className="text-6xl sm:text-7xl font-extrabold tracking-wide mb-6 animate-fadeIn drop-shadow-lg">
+            🏈 BBFL IS COMING
+          </h1>
+          <p className="text-2xl sm:text-3xl font-light mb-8 animate-fadeIn delay-500">
+            The Baker Boys Football League returns this season.
+          </p>
+          <p className="text-lg text-zinc-300 italic animate-fadeIn delay-700">
+            Draft day is around the corner. Stats. Standings. Rivalries. Legacy.
+            <br />
+            Full site goes live soon.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen p-8 bg-gradient-to-br from-slate-100 to-slate-300">
       <div className="max-w-3xl mx-auto text-center">
