@@ -113,10 +113,16 @@ export default function AdminPage() {
       await setDoc(doc(db, "players", player.id), player);
     }
 
+    // Set start date: Sept 7, 2025 at 5:00 PM
+    let startDate = new Date("2025-09-07T17:00:00");
+
     for (let i = 1; i <= 15; i++) {
+      const eventDate = new Date(startDate);
+      eventDate.setDate(startDate.getDate() + (i - 1) * 7);
+
       await setDoc(doc(db, "events", `week${i}`), {
         week: i.toString(),
-        date: new Date().toISOString(),
+        date: eventDate.toISOString(),
         teams: [],
         games: [],
         rankings: [],
