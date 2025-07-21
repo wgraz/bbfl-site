@@ -218,7 +218,7 @@ export default function DraftPage() {
                       className="bg-white p-4 rounded-lg shadow flex flex-col items-center"
                     >
                       <img
-                        src={player.photoURL || "/default-player.png"}
+                        src={player.photoURL || "/playerImg/baseIcon.jpg"}
                         alt={player.name}
                         className="w-16 h-16 rounded-full object-cover mb-3"
                       />

@@ -17,9 +17,9 @@ type Player = {
   photoURL: string;
 };
 
-type StatKey = "tds" | "ints" | "sacks" | "gp" | "conv";
+type StatKey = "tds" | "ints" | "sacks" | "conv";
 
-const statOptions: StatKey[] = ["tds", "ints", "sacks", "gp", "conv"];
+const statOptions: StatKey[] = ["tds", "ints", "sacks", "conv"];
 
 export default function StatsPage() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -98,7 +98,7 @@ export default function StatsPage() {
               className="flex items-center bg-white shadow-lg rounded-2xl p-5 transition hover:shadow-2xl"
             >
               <img
-                src={player.photoURL || "/default-player.png"}
+                src={player.photoURL || "/playerImg/baseIcon.jpg"}
                 alt={player.name}
                 className="w-20 h-20 rounded-full object-cover mr-6 border-2 border-blue-400"
                 loading="lazy"

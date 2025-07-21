@@ -134,7 +134,7 @@ export default function AdminStatPage() {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={player.photoURL || "/default-player.png"}
+                      src={player.photoURL || "/playerImg/baseIcon.jpg"}
                       alt={player.name}
                       className="w-12 h-12 rounded-full object-cover"
                     />

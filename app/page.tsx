@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Home() {
-  const showSite = false;
+  const showSite = true;
 
   if (!showSite) {
     return (
