@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Home() {
-  const showSite = process.env.NEXT_PUBLIC_SHOW_SITE === "true";
+  const showSite = false;
 
   if (!showSite) {
     return (
