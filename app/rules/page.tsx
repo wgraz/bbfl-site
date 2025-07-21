@@ -2,22 +2,22 @@
 export default function RulesPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 p-8">
-      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8">
-        <h1 className="text-4xl font-extrabold text-center text-blue-700 mb-6">
+      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-10">
+        <h1 className="text-4xl font-extrabold text-center text-blue-700 mb-8">
           📜 BBFL Official Rules
         </h1>
 
-        <p className="text-gray-700 text-center mb-10">
-          These rules govern all BBFL play. Review them carefully. Bolded rules
-          are strictly enforced.
+        <p className="text-gray-700 text-center mb-12 max-w-xl mx-auto">
+          These rules govern all BBFL play. Review them carefully.{" "}
+          <strong>Bolded rules are strictly enforced.</strong>
         </p>
 
-        <section className="space-y-8">
+        <section className="space-y-10">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
               ⏱ Game Structure
             </h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
                 <strong>Two 15-minute halves</strong>
               </li>
@@ -37,10 +37,10 @@ export default function RulesPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
               🏃 Offensive Rules
             </h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
                 <strong>10-second play clock after the ball is spotted</strong>
               </li>
@@ -60,10 +60,10 @@ export default function RulesPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
               🛡️ Defensive Rules
             </h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
                 <strong>5-second blitz count required before rushing</strong>
               </li>
@@ -80,10 +80,10 @@ export default function RulesPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
               🕒 Clock Management
             </h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
                 <strong>Clock stops under 5 minutes for major stoppages</strong>{" "}
                 (e.g., touchdowns, timeouts)
@@ -96,10 +96,10 @@ export default function RulesPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
               💥 Special Situations
             </h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
                 <strong>Onside Kick Alternative:</strong> "Jackpot" style from
                 the 25-yard line into ~10-yard zone. If failed, opponent starts

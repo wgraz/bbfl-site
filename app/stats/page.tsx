@@ -60,55 +60,71 @@ export default function StatsPage() {
 
   if (loading) {
     return (
-      <main className="p-6 text-center text-lg text-gray-500">
+      <main className="flex items-center justify-center min-h-screen p-6 text-lg text-gray-500">
         Loading player stats...
       </main>
     );
   }
 
   return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        🏈 Player Stats Leaders
-      </h1>
+    <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 py-12 px-6 sm:px-12">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-5xl font-extrabold text-blue-800 mb-8 text-center drop-shadow-sm">
+          🏈 Player Stats Leaders
+        </h1>
 
-      <div className="mb-6 text-center">
-        <label className="mr-2 font-medium">Filter by:</label>
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value as StatKey)}
-          className="border px-3 py-1 rounded"
-        >
-          {statOptions.map((stat) => (
-            <option key={stat} value={stat}>
-              {stat.toUpperCase()}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="grid gap-4">
-        {sortedPlayers.map((player) => (
-          <div
-            key={player.id}
-            className="flex items-center bg-white shadow rounded-lg p-4"
+        <div className="mb-8 flex justify-center items-center gap-3">
+          <label htmlFor="filter" className="font-semibold text-gray-700">
+            Filter by:
+          </label>
+          <select
+            id="filter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as StatKey)}
+            className="border border-gray-300 rounded-md px-4 py-2 text-gray-700 hover:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           >
-            <img
-              src={player.photoURL || "/default-player.png"}
-              alt={player.name}
-              className="w-16 h-16 rounded-full object-cover mr-4"
-            />
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold">{player.name}</h2>
-              <p className="text-sm text-gray-600">Position: {player.pos}</p>
-              <p className="text-sm text-gray-600">Games Played: {player.gp}</p>
+            {statOptions.map((stat) => (
+              <option key={stat} value={stat}>
+                {stat.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-4">
+          {sortedPlayers.map((player) => (
+            <div
+              key={player.id}
+              className="flex items-center bg-white shadow-lg rounded-2xl p-5 transition hover:shadow-2xl"
+            >
+              <img
+                src={player.photoURL || "/default-player.png"}
+                alt={player.name}
+                className="w-20 h-20 rounded-full object-cover mr-6 border-2 border-blue-400"
+                loading="lazy"
+              />
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl font-semibold text-gray-900 truncate">
+                  {player.name}
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Position: <span className="font-medium">{player.pos}</span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Games Played: <span className="font-medium">{player.gp}</span>
+                </p>
+              </div>
+              <div className="text-right min-w-[70px] ml-6">
+                <p className="text-3xl font-extrabold text-blue-700">
+                  {player[filter]}
+                </p>
+                <p className="text-xs uppercase text-gray-400 tracking-wide mt-1">
+                  {filter}
+                </p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-xl font-bold">{player[filter]}</p>
-              <p className="text-sm text-gray-500">{filter.toUpperCase()}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </main>
   );

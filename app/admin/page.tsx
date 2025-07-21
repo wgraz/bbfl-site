@@ -11,13 +11,16 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
+// Config
+const ADMIN_PASSWORD = "Willy"; // Change this as needed
+
+// Component
 export default function AdminPage() {
   const [input, setInput] = useState("");
   const [accessGranted, setAccessGranted] = useState(false);
 
-  const ADMIN_PASSWORD = "Willy"; // change to whatever you want
-
-  function handleSubmit(e: React.FormEvent) {
+  // Handle password form
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (input === ADMIN_PASSWORD) {
       setAccessGranted(true);
@@ -26,8 +29,11 @@ export default function AdminPage() {
     }
   }
 
+  // Reset and initialize test data
   async function resetTestData() {
     const collections = ["events", "players", "teams"];
+
+    // Delete all current docs in the collections
     for (const col of collections) {
       const snap = await getDocs(collection(db, col));
       for (const docu of snap.docs) {
@@ -35,70 +41,31 @@ export default function AdminPage() {
       }
     }
 
-    const testTeams = [
-      {
-        id: "team1",
-        name: "Team A",
-        wins: 0,
-        losses: 0,
-        pointsFor: 0,
-        pointsAg: 0,
-        leaguePoints: 0,
-        eventsPlayed: 0,
-        rank: 0,
-        color: "red",
-        roster: [],
-      },
-      {
-        id: "team2",
-        name: "Team B",
-        wins: 0,
-        losses: 0,
-        pointsFor: 0,
-        pointsAg: 0,
-        leaguePoints: 0,
-        eventsPlayed: 0,
-        rank: 0,
-        color: "blue",
-        roster: [],
-      },
-      {
-        id: "team3",
-        name: "Team C",
-        wins: 0,
-        losses: 0,
-        pointsFor: 0,
-        pointsAg: 0,
-        leaguePoints: 0,
-        eventsPlayed: 0,
-        rank: 0,
-        color: "green",
-        roster: [],
-      },
-      {
-        id: "team4",
-        name: "Team D",
-        wins: 0,
-        losses: 0,
-        pointsFor: 0,
-        pointsAg: 0,
-        leaguePoints: 0,
-        eventsPlayed: 0,
-        rank: 0,
-        color: "yellow",
-        roster: [],
-      },
-    ];
+    // Create test teams
+    const testTeams = ["A", "B", "C", "D"].map((letter, i) => ({
+      id: `team${i + 1}`,
+      name: `Team ${letter}`,
+      wins: 0,
+      losses: 0,
+      pointsFor: 0,
+      pointsAg: 0,
+      leaguePoints: 0,
+      eventsPlayed: 0,
+      rank: 0,
+      color: ["red", "blue", "green", "yellow"][i],
+      roster: [],
+    }));
+
     for (const team of testTeams) {
       await setDoc(doc(db, "teams", team.id), team);
     }
 
-    const testPlayers = [];
-    for (let i = 1; i <= 16; i++) {
-      const teamIndex = Math.floor((i - 1) / 4);
-      testPlayers.push({
-        id: `p${i}`,
-        name: `Player ${i}`,
+    // Create 16 players across 4 teams
+    const testPlayers = Array.from({ length: 16 }, (_, i) => {
+      const teamIndex = Math.floor(i / 4);
+      return {
+        id: `p${i + 1}`,
+        name: `Player ${i + 1}`,
         gp: 0,
         ints: 0,
         sacks: 0,
@@ -107,19 +74,18 @@ export default function AdminPage() {
         pos: "WR",
         photoURL: "",
         teamID: `team${teamIndex + 1}`,
-      });
-    }
+      };
+    });
+
     for (const player of testPlayers) {
       await setDoc(doc(db, "players", player.id), player);
     }
 
-    // Set start date: Sept 7, 2025 at 5:00 PM
-    let startDate = new Date("2025-09-07T17:00:00");
-
+    // Create 15 test events (weekly)
+    const startDate = new Date("2025-09-07T17:00:00");
     for (let i = 1; i <= 15; i++) {
       const eventDate = new Date(startDate);
       eventDate.setDate(startDate.getDate() + (i - 1) * 7);
-
       await setDoc(doc(db, "events", `week${i}`), {
         week: i.toString(),
         date: eventDate.toISOString(),
@@ -163,27 +129,25 @@ export default function AdminPage() {
             Access Granted ✅
           </p>
 
+          {/* Navigation Links */}
           <Link
             href="/adminEdit"
             className="block text-center bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
           >
             Go to Admin Edit
           </Link>
-
           <Link
             href="/adminEvent"
             className="block text-center bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700"
           >
             Go to Admin Event
           </Link>
-
           <Link
             href="/draft"
             className="block text-center bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700"
           >
             Go to Draft Page
           </Link>
-
           <Link
             href="/adminStat"
             className="block text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
@@ -191,6 +155,7 @@ export default function AdminPage() {
             Go to Admin Stat Page
           </Link>
 
+          {/* Reset Data Button */}
           <button
             onClick={resetTestData}
             className="block w-full text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"

@@ -34,63 +34,81 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen p-8 bg-gradient-to-br from-slate-100 to-slate-300">
-      <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-5xl font-extrabold mb-4 text-blue-700">🏈 BBFL</h1>
-        <p className="text-lg mb-8 text-gray-700">
+    <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 py-16 px-6">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-6xl font-black text-blue-800 tracking-tight mb-4 drop-shadow-sm">
+          🏈 BBFL
+        </h1>
+        <p className="text-xl text-gray-700 mb-12 font-medium">
           The Baker Boys Football League. Compete weekly. Dominate the field.
           Earn those 8 points.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <Link
             href="/teams"
-            className="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
+            className="group block rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-xl font-bold text-blue-600">Teams</h2>
-            <p className="text-sm text-gray-600">View rosters and team stats</p>
+            <h2 className="text-2xl font-bold text-blue-600 group-hover:underline">
+              Teams
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">
+              View rosters and team stats
+            </p>
           </Link>
 
           <Link
             href="/standings"
-            className="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
+            className="group block rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-xl font-bold text-green-600">Standings</h2>
-            <p className="text-sm text-gray-600">Current team rankings</p>
+            <h2 className="text-2xl font-bold text-green-600 group-hover:underline">
+              Standings
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">Current team rankings</p>
           </Link>
 
           <Link
             href="/stats"
-            className="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
+            className="group block rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-xl font-bold text-purple-600">Stats</h2>
-            <p className="text-sm text-gray-600">Top players and leaders</p>
+            <h2 className="text-2xl font-bold text-purple-600 group-hover:underline">
+              Stats
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">
+              Top players and leaders
+            </p>
           </Link>
 
           <Link
             href="/schedule"
-            className="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
+            className="group block rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-xl font-bold text-teal-600">Schedule</h2>
-            <p className="text-sm text-gray-600">Upcoming & past events</p>
+            <h2 className="text-2xl font-bold text-teal-600 group-hover:underline">
+              Schedule
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">Upcoming & past events</p>
           </Link>
 
           <Link
             href="/admin"
-            className="block p-6 bg-gray-900 text-white rounded-xl shadow hover:shadow-lg transition"
+            className="group block rounded-2xl bg-gray-900 text-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-xl font-bold">Admin</h2>
-            <p className="text-sm text-gray-300">
+            <h2 className="text-2xl font-bold group-hover:underline">Admin</h2>
+            <p className="text-sm text-gray-300 mt-2">
               Private league control panel
             </p>
           </Link>
 
           <Link
             href="/rules"
-            className="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
+            className="group block rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-xl font-bold text-red-600">Rules</h2>
-            <p className="text-sm text-gray-600">View league rules & format</p>
+            <h2 className="text-2xl font-bold text-red-600 group-hover:underline">
+              Rules
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">
+              View league rules & format
+            </p>
           </Link>
         </div>
       </div>

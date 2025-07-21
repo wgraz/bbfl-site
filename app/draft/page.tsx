@@ -100,10 +100,9 @@ export default function DraftPage() {
     const playerRef = doc(db, "players", playerId);
     await updateDoc(playerRef, { teamID: teamId });
 
-    const updatedPlayers = players.map((p) =>
-      p.id === playerId ? { ...p, teamID: teamId } : p
+    setPlayers((prev) =>
+      prev.map((p) => (p.id === playerId ? { ...p, teamID: teamId } : p))
     );
-    setPlayers(updatedPlayers);
     setCurrentPickIndex((prev) => prev + 1);
     setTimer(90);
   }
@@ -123,50 +122,63 @@ export default function DraftPage() {
         <div className="text-center">
           <button
             onClick={startDraft}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
           >
             Start Draft
           </button>
         </div>
       ) : draftComplete && !showDraftBoard ? (
-        <div className="text-center">
-          <p className="text-lg font-semibold mb-4">✅ Draft Complete!</p>
+        <div className="text-center space-y-4">
+          <p className="text-lg font-semibold text-green-700">
+            ✅ Draft Complete!
+          </p>
           <button
             onClick={() => setShowDraftBoard(true)}
-            className="bg-purple-600 text-white px-6 py-3 rounded hover:bg-purple-700"
+            className="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-purple-700 transition"
           >
             See Draft Board
           </button>
         </div>
       ) : showDraftBoard ? (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-center">
+        <div className="space-y-8">
+          <h2 className="text-2xl font-semibold text-center mb-6">
             Final Draft Board
           </h2>
           {teams.map((team) => {
             const teamPlayers = players.filter((p) => p.teamID === team.id);
             return (
-              <div key={team.id} className="bg-white p-4 rounded shadow mb-4">
+              <section
+                key={team.id}
+                className="bg-white p-6 rounded-xl shadow-md border-l-8"
+                style={{ borderColor: team.color || "#000" }}
+              >
                 <h3
-                  className="text-xl font-bold mb-2"
+                  className="text-xl font-bold mb-3"
                   style={{ color: team.color }}
                 >
                   {team.name}
                 </h3>
-                <ul className="list-disc list-inside space-y-1">
-                  {teamPlayers.map((player) => (
-                    <li key={player.id}>
-                      {player.name} ({player.pos})
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                {teamPlayers.length ? (
+                  <ul className="list-disc list-inside space-y-1 text-gray-800">
+                    {teamPlayers.map((player) => (
+                      <li key={player.id}>
+                        {player.name}{" "}
+                        <span className="text-sm text-gray-600">
+                          ({player.pos})
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="italic text-gray-500">No players assigned.</p>
+                )}
+              </section>
             );
           })}
-          <div className="text-center">
+          <div className="text-center mt-8">
             <button
               onClick={() => router.push("/")}
-              className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700"
+              className="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
             >
               Complete Draft
             </button>
@@ -177,43 +189,54 @@ export default function DraftPage() {
           <div className="text-center">
             <h2 className="text-xl font-semibold mb-2">Current Pick</h2>
             <p className="text-lg">
-              <span style={{ color: currentTeam?.color || "#000" }}>
-                {currentTeam?.name}
+              <span
+                style={{ color: currentTeam?.color || "#000" }}
+                className="font-semibold"
+              >
+                {currentTeam?.name || "TBD"}
               </span>{" "}
-              is on the clock 🕒 ({Math.floor(timer / 60)}:
-              {String(timer % 60).padStart(2, "0")})
+              is on the clock 🕒{" "}
+              <span className="font-mono">
+                {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
+              </span>
             </p>
           </div>
 
-          <div>
-            <h2 className="text-xl font-semibold mb-2">Available Players</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {players
-                .filter((p) => !p.teamID)
-                .map((player) => (
-                  <div
-                    key={player.id}
-                    className="bg-white p-4 rounded shadow flex flex-col items-center"
-                  >
-                    <img
-                      src={player.photoURL || "/default-player.png"}
-                      alt={player.name}
-                      className="w-16 h-16 rounded-full object-cover mb-2"
-                    />
-                    <p className="font-semibold">{player.name}</p>
-                    <p className="text-sm text-gray-500">{player.pos}</p>
-                    {currentTeamId && (
-                      <button
-                        onClick={() => handleMakePick(player.id)}
-                        className="mt-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                      >
-                        Make Pick
-                      </button>
-                    )}
-                  </div>
-                ))}
-            </div>
-          </div>
+          <section>
+            <h2 className="text-xl font-semibold mb-4">Available Players</h2>
+            {players.filter((p) => !p.teamID).length === 0 ? (
+              <p className="text-center italic text-gray-500">
+                No available players remaining.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                {players
+                  .filter((p) => !p.teamID)
+                  .map((player) => (
+                    <div
+                      key={player.id}
+                      className="bg-white p-4 rounded-lg shadow flex flex-col items-center"
+                    >
+                      <img
+                        src={player.photoURL || "/default-player.png"}
+                        alt={player.name}
+                        className="w-16 h-16 rounded-full object-cover mb-3"
+                      />
+                      <p className="font-semibold text-center">{player.name}</p>
+                      <p className="text-sm text-gray-500">{player.pos}</p>
+                      {currentTeamId && (
+                        <button
+                          onClick={() => handleMakePick(player.id)}
+                          className="mt-3 bg-green-600 text-white px-4 py-1 rounded-md hover:bg-green-700 transition"
+                        >
+                          Make Pick
+                        </button>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            )}
+          </section>
         </div>
       )}
     </main>

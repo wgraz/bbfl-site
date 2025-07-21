@@ -67,63 +67,67 @@ export default function StandingsPage() {
 
   if (loading) {
     return (
-      <main className="p-6 text-center text-gray-500">
+      <main className="flex items-center justify-center min-h-screen p-6 text-gray-500 text-lg">
         Loading standings...
       </main>
     );
   }
 
   return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-10">
-        📈 BBFL Standings
-      </h1>
+    <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 py-12 px-6 sm:px-12">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-5xl font-extrabold text-blue-800 mb-12 text-center drop-shadow-sm">
+          📈 BBFL Standings
+        </h1>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse rounded-xl overflow-hidden">
-          <thead className="bg-gray-100 text-gray-700 text-sm">
-            <tr>
-              <th className="py-2 px-4">Rank</th>
-              <th className="py-2 px-4">Team</th>
-              <th className="py-2 px-4">W - L</th>
-              <th className="py-2 px-4">League Pts</th>
-              <th className="py-2 px-4">Point Diff</th>
-              <th className="py-2 px-4">PF - PA</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teams.map((team) => {
-              const pointDiff = team.pointsFor - team.pointsAg;
+        <div className="overflow-x-auto rounded-lg shadow-lg bg-white">
+          <table className="w-full border-collapse text-left">
+            <thead className="bg-gray-100 text-gray-700 text-sm font-semibold uppercase tracking-wide">
+              <tr>
+                <th className="py-3 px-5">Rank</th>
+                <th className="py-3 px-5">Team</th>
+                <th className="py-3 px-5">W - L</th>
+                <th className="py-3 px-5">League Pts</th>
+                <th className="py-3 px-5">Point Diff</th>
+                <th className="py-3 px-5">PF - PA</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teams.map((team) => {
+                const pointDiff = team.pointsFor - team.pointsAg;
 
-              return (
-                <tr
-                  key={team.id}
-                  className="border-b hover:bg-gray-50 transition-colors"
-                >
-                  <td className="py-2 px-4 font-semibold text-blue-600">
-                    #{team.rank}
-                  </td>
-                  <td className="py-2 px-4">{team.name}</td>
-                  <td className="py-2 px-4">
-                    {team.wins} - {team.losses}
-                  </td>
-                  <td className="py-2 px-4">{team.leaguePoints}</td>
-                  <td
-                    className={`py-2 px-4 font-medium ${
-                      pointDiff >= 0 ? "text-green-600" : "text-red-500"
-                    }`}
+                return (
+                  <tr
+                    key={team.id}
+                    className="border-b last:border-none hover:bg-gray-50 transition-colors"
                   >
-                    {pointDiff >= 0 ? "+" : ""}
-                    {pointDiff}
-                  </td>
-                  <td className="py-2 px-4">
-                    {team.pointsFor} - {team.pointsAg}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    <td className="py-3 px-5 font-semibold text-blue-700">
+                      #{team.rank}
+                    </td>
+                    <td className="py-3 px-5 font-medium">{team.name}</td>
+                    <td className="py-3 px-5">
+                      {team.wins} - {team.losses}
+                    </td>
+                    <td className="py-3 px-5 font-semibold">
+                      {team.leaguePoints}
+                    </td>
+                    <td
+                      className={`py-3 px-5 font-semibold ${
+                        pointDiff >= 0 ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
+                      {pointDiff >= 0 ? "+" : ""}
+                      {pointDiff}
+                    </td>
+                    <td className="py-3 px-5">
+                      {team.pointsFor} - {team.pointsAg}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   );
