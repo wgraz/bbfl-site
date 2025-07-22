@@ -1,3 +1,5 @@
+"use client";
+
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase.js"; // adjust path if different
 import { Metadata } from "next";
