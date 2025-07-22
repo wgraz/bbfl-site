@@ -14,7 +14,6 @@ import { db } from "@/lib/firebase";
 // Config
 const ADMIN_PASSWORD = "Willy"; // Change this as needed
 
-// Component
 export default function AdminPage() {
   const [input, setInput] = useState("");
   const [accessGranted, setAccessGranted] = useState(false);
@@ -98,6 +97,22 @@ export default function AdminPage() {
     alert("Test data initialized.");
   }
 
+  // Erase all players only
+  async function eraseAllPlayers() {
+    if (
+      !confirm(
+        "Are you sure you want to erase ALL players? This cannot be undone."
+      )
+    ) {
+      return;
+    }
+    const playersSnap = await getDocs(collection(db, "players"));
+    for (const playerDoc of playersSnap.docs) {
+      await deleteDoc(doc(db, "players", playerDoc.id));
+    }
+    alert("All players erased.");
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
       <h1 className="text-3xl font-bold mb-6">Admin Access</h1>
@@ -161,6 +176,14 @@ export default function AdminPage() {
             className="block w-full text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
           >
             Reset and Initialize Test Data
+          </button>
+
+          {/* Erase All Players Button */}
+          <button
+            onClick={eraseAllPlayers}
+            className="block w-full text-center bg-red-800 text-white py-2 px-4 rounded hover:bg-red-900"
+          >
+            Erase All Players
           </button>
         </div>
       )}

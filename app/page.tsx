@@ -50,14 +50,20 @@ export default function Home() {
           <h1 className="text-6xl sm:text-7xl font-extrabold tracking-wide mb-6 animate-fadeIn drop-shadow-lg">
             🏈 BBFL IS COMING
           </h1>
-          <p className="text-2xl sm:text-3xl font-light mb-8 animate-fadeIn delay-500">
+          <p className="text-2xl sm:text-3xl font-light mb-6 animate-fadeIn delay-500">
             The Baker Boys Football League returns this season.
           </p>
-          <p className="text-lg text-zinc-300 italic animate-fadeIn delay-700">
+          <p className="text-lg text-zinc-300 italic mb-8 animate-fadeIn delay-700">
             Draft day is around the corner. Stats. Standings. Rivalries. Legacy.
             <br />
             Full site goes live soon.
           </p>
+
+          <Link href="/signUp">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl text-lg shadow-lg transition-all duration-300 animate-fadeIn delay-1000">
+              Sign Up to Play
+            </button>
+          </Link>
         </div>
       </div>
     );
