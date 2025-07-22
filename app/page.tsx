@@ -1,7 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../lib/firebase.js"; // adjust if needed
 
 export default function Home() {
-  const showSite = true;
+  const [showSite, setShowSite] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const fetchShowSite = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "general"));
+        const doc = snapshot.docs[0]; // assuming only one doc in "general"
+        const data = doc?.data();
+
+        setShowSite(data?.showSite ?? false); // fallback to false if missing
+      } catch (error) {
+        console.error("Error fetching showSite flag:", error);
+        setShowSite(false); // fallback to splash page
+      }
+    };
+
+    fetchShowSite();
+  }, []);
+
+  if (showSite === null) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white">
+        <p className="text-lg">Loading...</p>
+      </div>
+    );
+  }
 
   if (!showSite) {
     return (
