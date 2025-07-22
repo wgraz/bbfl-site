@@ -77,7 +77,7 @@ export default async function SchedulePage() {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl font-bold text-blue-600 capitalize">
-                    {week.id}
+                    {week.id.replace(/week(\d+)/i, "Week $1")}
                   </h3>
                   {week.date && (
                     <time
@@ -176,7 +176,7 @@ export default async function SchedulePage() {
                   className="bg-yellow-50 border border-yellow-300 rounded-xl p-6 flex flex-col justify-center"
                 >
                   <h3 className="text-xl font-bold text-yellow-800 capitalize truncate">
-                    {week.id}
+                    {week.id.replace(/week(\d+)/i, "Week $1")}
                   </h3>
                   {week.date ? (
                     <p className="text-sm text-yellow-700 mt-2 truncate">
