@@ -5,7 +5,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "BBFL",
-  description: "Backyard Football League Admin",
+  description: "Baker Boys Football League Hub",
+  icons: {
+    icon: "../public/logo.png",
+  },
 };
 
 export default function RootLayout({
