@@ -11,21 +11,22 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-// Config
+// ✅ All hooks must go here
 const [adminPass, setAdminPass] = useState<string | null>(null);
 const [input, setInput] = useState("");
 const [accessGranted, setAccessGranted] = useState(false);
 
+// ✅ useEffect also inside the component
 useEffect(() => {
   const fetchAdminPass = async () => {
     try {
       const snapshot = await getDocs(collection(db, "general"));
-      const doc = snapshot.docs[0]; // safer: use [0] instead of [1] unless you're sure
+      const doc = snapshot.docs[0]; // safer than [1]
       const data = doc?.data();
       setAdminPass(data?.adminPass ?? "Willy");
     } catch (error) {
       console.error("Error fetching admin password:", error);
-      setAdminPass("Willy"); // fallback if error
+      setAdminPass("Willy"); // fallback
     }
   };
 
