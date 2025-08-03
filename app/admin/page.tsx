@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   collection,
@@ -12,7 +12,27 @@ import {
 import { db } from "@/lib/firebase";
 
 // Config
-const ADMIN_PASSWORD = "Willy"; // Change this as needed
+const [adminPass, setAdminPass] = useState<string | null>(null);
+const [input, setInput] = useState("");
+const [accessGranted, setAccessGranted] = useState(false);
+
+useEffect(() => {
+  const fetchAdminPass = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "general"));
+      const doc = snapshot.docs[0]; // safer: use [0] instead of [1] unless you're sure
+      const data = doc?.data();
+      setAdminPass(data?.adminPass ?? "Willy");
+    } catch (error) {
+      console.error("Error fetching admin password:", error);
+      setAdminPass("Willy"); // fallback if error
+    }
+  };
+
+  fetchAdminPass();
+}, []);
+
+const ADMIN_PASSWORD = adminPass; // Change this as needed
 
 export default function AdminPage() {
   const [input, setInput] = useState("");
@@ -21,7 +41,7 @@ export default function AdminPage() {
   // Handle password form
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (input === ADMIN_PASSWORD) {
+    if (input === adminPass) {
       setAccessGranted(true);
     } else {
       alert("Incorrect password");
