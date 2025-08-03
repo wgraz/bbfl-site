@@ -11,49 +11,51 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-// ✅ All hooks must go here
-const [adminPass, setAdminPass] = useState<string | null>(null);
-const [input, setInput] = useState("");
-const [accessGranted, setAccessGranted] = useState(false);
-
-// ✅ useEffect also inside the component
-useEffect(() => {
-  const fetchAdminPass = async () => {
-    try {
-      const snapshot = await getDocs(collection(db, "general"));
-      const doc = snapshot.docs[0]; // safer than [1]
-      const data = doc?.data();
-      setAdminPass(data?.adminPass ?? "Willy");
-    } catch (error) {
-      console.error("Error fetching admin password:", error);
-      setAdminPass("Willy"); // fallback
-    }
-  };
-
-  fetchAdminPass();
-}, []);
-
-const ADMIN_PASSWORD = adminPass; // Change this as needed
-
 export default function AdminPage() {
+  const [adminPass, setAdminPass] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [accessGranted, setAccessGranted] = useState(false);
 
-  // Handle password form
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  // Fetch admin password from Firestore
+  useEffect(() => {
+    const fetchAdminPass = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "general"));
+        const doc = snapshot.docs[0]; // Adjust index if needed
+        const data = doc?.data();
+        setAdminPass(data?.adminPass ?? "Willy"); // Fallback password
+      } catch (error) {
+        console.error("Error fetching admin password:", error);
+        setAdminPass("Willy"); // Fallback on error
+      }
+    };
+
+    fetchAdminPass();
+  }, []);
+
+  // While password is loading
+  if (adminPass === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg font-medium">Loading...</p>
+      </div>
+    );
+  }
+
+  // Handle login
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input === adminPass) {
       setAccessGranted(true);
     } else {
       alert("Incorrect password");
     }
-  }
+  };
 
-  // Reset and initialize test data
-  async function resetTestData() {
+  // Reset test data
+  const resetTestData = async () => {
     const collections = ["events", "players", "teams"];
 
-    // Delete all current docs in the collections
     for (const col of collections) {
       const snap = await getDocs(collection(db, col));
       for (const docu of snap.docs) {
@@ -61,7 +63,6 @@ export default function AdminPage() {
       }
     }
 
-    // Create test teams
     const testTeams = ["A", "B", "C", "D"].map((letter, i) => ({
       id: `team${i + 1}`,
       name: `Team ${letter}`,
@@ -80,7 +81,6 @@ export default function AdminPage() {
       await setDoc(doc(db, "teams", team.id), team);
     }
 
-    // Create 16 players across 4 teams
     const testPlayers = Array.from({ length: 16 }, (_, i) => {
       const teamIndex = Math.floor(i / 4);
       return {
@@ -101,7 +101,6 @@ export default function AdminPage() {
       await setDoc(doc(db, "players", player.id), player);
     }
 
-    // Create 15 test events (weekly)
     const startDate = new Date("2025-09-07T17:00:00");
     for (let i = 1; i <= 15; i++) {
       const eventDate = new Date(startDate);
@@ -116,10 +115,10 @@ export default function AdminPage() {
     }
 
     alert("Test data initialized.");
-  }
+  };
 
-  // Erase all players only
-  async function eraseAllPlayers() {
+  // Delete all players
+  const eraseAllPlayers = async () => {
     if (
       !confirm(
         "Are you sure you want to erase ALL players? This cannot be undone."
@@ -132,7 +131,7 @@ export default function AdminPage() {
       await deleteDoc(doc(db, "players", playerDoc.id));
     }
     alert("All players erased.");
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
@@ -165,7 +164,6 @@ export default function AdminPage() {
             Access Granted ✅
           </p>
 
-          {/* Navigation Links */}
           <Link
             href="/adminEdit"
             className="block text-center bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
@@ -191,7 +189,6 @@ export default function AdminPage() {
             Go to Admin Stat Page
           </Link>
 
-          {/* Reset Data Button */}
           <button
             onClick={resetTestData}
             className="block w-full text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
@@ -199,7 +196,6 @@ export default function AdminPage() {
             Reset and Initialize Test Data
           </button>
 
-          {/* Erase All Players Button */}
           <button
             onClick={eraseAllPlayers}
             className="block w-full text-center bg-red-800 text-white py-2 px-4 rounded hover:bg-red-900"
