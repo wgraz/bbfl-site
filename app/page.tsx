@@ -12,7 +12,7 @@ export default function Home() {
     const fetchShowSite = async () => {
       try {
         const snapshot = await getDocs(collection(db, "general"));
-        const doc = snapshot.docs[0]; // assuming only one doc in "general"
+        const doc = snapshot.docs[1]; // assuming only one doc in "general"
         const data = doc?.data();
 
         setShowSite(data?.showSite ?? false); // fallback to false if missing
