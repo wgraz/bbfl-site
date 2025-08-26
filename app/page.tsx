@@ -77,7 +77,6 @@ export default function Home() {
         </h1>
         <p className="text-xl text-gray-700 mb-12 font-medium">
           The Baker Boys Football League. Compete weekly. Dominate the field.
-          Earn those 8 points.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">

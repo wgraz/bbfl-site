@@ -18,7 +18,7 @@ function generateRoundRobinMatchups(selectedTeams: string[]) {
 }
 
 // Default league points distribution by rank (1st to 4th)
-const leaguePointsDistribution = [4, 2.5, 1.5, 0]; // sums to 8 points; adjust as needed
+const leaguePointsDistribution = [10, 6, 3, 1]; // sums to 8 points; adjust as needed
 
 type ScoreEntry = { team1Score: number; team2Score: number };
 
