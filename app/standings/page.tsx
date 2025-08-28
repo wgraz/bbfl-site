@@ -149,7 +149,7 @@ export default function StandingsPage() {
             </h2>
             <p className="text-gray-700 mb-4">
               League Points are awarded based on performance each event. Teams
-              are ranked 1st–4th and receive league points accordingly:
+              are ranked 1st–4th and receive League Points accordingly:
               <br />
               <br />
               • 1st Place: 10 Points <br />
