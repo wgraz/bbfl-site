@@ -42,15 +42,19 @@ export default function RulesPage() {
             </h2>
             <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
-                <strong>10-second play clock after the ball is spotted</strong>
+                <strong>25-second play clock after the ball is spotted</strong>
               </li>
               <li>
                 <strong>
-                  Quarterback can scramble 5 seconds after blitz begins
+                  Quarterback can scramble 10 seconds after snap of the ball
                 </strong>
               </li>
               <li>
                 No throwing the ball if it was already thrown forward to you
+              </li>
+              <li>
+                You can not advance the ball if you catch a backwards pass
+                behind the line of scrimmage
               </li>
               <li>
                 If play clock count is too fast, offense can ask defense to
@@ -108,6 +112,12 @@ export default function RulesPage() {
               <li>
                 <strong>
                   Tied league points are broken by wins then point differential.
+                </strong>
+              </li>
+              <li>
+                <strong>
+                  Trades are allowed and must be even (1-for-1, 2-for-2, etc.).
+                  Deadline: Week 6.
                 </strong>
               </li>
             </ul>

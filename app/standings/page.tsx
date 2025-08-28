@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../lib/firebase.js";
+import { HelpCircle } from "lucide-react";
 
 type Team = {
   id: string;
@@ -18,6 +19,7 @@ type Team = {
 export default function StandingsPage() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     async function fetchTeams() {
@@ -87,7 +89,15 @@ export default function StandingsPage() {
                 <th className="py-3 px-5">Rank</th>
                 <th className="py-3 px-5">Team</th>
                 <th className="py-3 px-5">W - L</th>
-                <th className="py-3 px-5">League Pts</th>
+                <th className="py-3 px-5 flex items-center gap-1">
+                  League Pts
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    <HelpCircle size={16} />
+                  </button>
+                </th>
                 <th className="py-3 px-5">Point Diff</th>
                 <th className="py-3 px-5">PF - PA</th>
               </tr>
@@ -129,6 +139,35 @@ export default function StandingsPage() {
           </table>
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+            <h2 className="text-xl font-bold mb-4 text-blue-700">
+              🏆 League Points Explained
+            </h2>
+            <p className="text-gray-700 mb-4">
+              League Points are awarded based on performance each event. Teams
+              are ranked 1st–4th and receive league points accordingly:
+              <br />
+              <br />
+              • 1st Place: 10 Points <br />
+              • 2nd Place: 6 Points <br />
+              • 3rd Place: 3 Point <br />
+              • 4th Place: 1 Points <br />
+              <br />
+              These points determine overall standings across the season.
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
