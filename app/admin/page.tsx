@@ -189,6 +189,7 @@ export default function AdminPage() {
             Go to Admin Stat Page
           </Link>
 
+          {/*
           <button
             onClick={resetTestData}
             className="block w-full text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
@@ -202,6 +203,7 @@ export default function AdminPage() {
           >
             Erase All Players
           </button>
+          */}
         </div>
       )}
     </div>
