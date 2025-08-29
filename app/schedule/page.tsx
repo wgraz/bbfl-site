@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../lib/firebase.js"; // adjust path if different
+import { db } from "../../lib/firebase.js";
 import { Metadata } from "next";
 import React from "react";
 
@@ -31,17 +31,56 @@ type EventWeek = {
   date?: string;
 };
 
+type Team = {
+  id: string;
+  name: string;
+};
+
+/**
+ * Fetch teams and return an ID -> Name lookup map
+ */
+async function getTeams(): Promise<Record<string, string>> {
+  const snapshot = await getDocs(collection(db, "teams"));
+  const teamMap: Record<string, string> = {};
+
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    teamMap[doc.id] = data.name;
+  });
+
+  return teamMap;
+}
+
+/**
+ * Fetch event weeks and replace team IDs with names
+ */
 async function getEventData(): Promise<EventWeek[]> {
+  const teamMap = await getTeams();
   const snapshot = await getDocs(collection(db, "events"));
   const weeks: EventWeek[] = [];
 
   snapshot.forEach((doc) => {
     const data = doc.data();
 
+    const games = Array.isArray(data.games)
+      ? data.games.map((g: any) => ({
+          ...g,
+          team1: teamMap[g.team1] ?? g.team1,
+          team2: teamMap[g.team2] ?? g.team2,
+        }))
+      : [];
+
+    const rankings = Array.isArray(data.rankings)
+      ? data.rankings.map((r: any) => ({
+          ...r,
+          team: teamMap[r.team] ?? r.team,
+        }))
+      : [];
+
     weeks.push({
       id: doc.id,
-      games: Array.isArray(data.games) ? data.games : [],
-      rankings: Array.isArray(data.rankings) ? data.rankings : [],
+      games,
+      rankings,
       date: data.date ?? "",
     });
   });
