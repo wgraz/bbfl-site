@@ -120,6 +120,10 @@ export default function RulesPage() {
                   Deadline: Week 6.
                 </strong>
               </li>
+              <li>
+                Players can show up the latest 20 minutes after event start
+                time.
+              </li>
             </ul>
           </div>
         </section>
