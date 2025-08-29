@@ -35,6 +35,8 @@ type Player = {
   sacks: number;
   tds: number;
   teamID: string;
+  conv: number;
+  to: number;
 };
 
 export default function AdminEditPage() {
@@ -249,6 +251,8 @@ export default function AdminEditPage() {
                     { label: "Interceptions", field: "ints", type: "number" },
                     { label: "Sacks", field: "sacks", type: "number" },
                     { label: "Touchdowns", field: "tds", type: "number" },
+                    { label: "Conversions", field: "conv", type: "number" },
+                    { label: "Turnovers", field: "to", type: "number" },
                     { label: "Team ID", field: "teamID", type: "text" },
                   ].map(({ label, field, type }) => (
                     <div key={field}>

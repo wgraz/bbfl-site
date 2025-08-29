@@ -14,6 +14,7 @@ type Player = {
   ints: number;
   sacks: number;
   conv: number;
+  to: number;
   gp: number;
 };
 
@@ -51,6 +52,7 @@ export default function AdminStatPage() {
           sacks: data.sacks || 0,
           conv: data.conv || 0,
           gp: data.gp || 0,
+          to: data.to || 0,
         });
       });
 
@@ -103,6 +105,7 @@ export default function AdminStatPage() {
         sacks: (playerData.sacks || 0) + (newStats.sacks || 0),
         conv: (playerData.conv || 0) + (newStats.conv || 0),
         gp: (playerData.gp || 0) + (newStats.gp || 0),
+        to: (playerData.to || 0) + (newStats.to || 0),
       });
     }
 
@@ -145,28 +148,31 @@ export default function AdminStatPage() {
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 text-sm">
-                    {["tds", "ints", "sacks", "conv", "gp"].map((stat) => (
-                      <div key={stat}>
-                        <label className="block font-medium capitalize">
-                          {stat}
-                        </label>
-                        <input
-                          type="number"
-                          min={0}
-                          className="border rounded px-2 py-1 w-full"
-                          value={
-                            statInputs[player.id]?.[stat as keyof Player] ?? ""
-                          }
-                          onChange={(e) =>
-                            handleInputChange(
-                              player.id,
-                              stat as keyof Player,
-                              parseInt(e.target.value) || 0
-                            )
-                          }
-                        />
-                      </div>
-                    ))}
+                    {["tds", "ints", "sacks", "conv", "gp", "to"].map(
+                      (stat) => (
+                        <div key={stat}>
+                          <label className="block font-medium capitalize">
+                            {stat}
+                          </label>
+                          <input
+                            type="number"
+                            min={0}
+                            className="border rounded px-2 py-1 w-full"
+                            value={
+                              statInputs[player.id]?.[stat as keyof Player] ??
+                              ""
+                            }
+                            onChange={(e) =>
+                              handleInputChange(
+                                player.id,
+                                stat as keyof Player,
+                                parseInt(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               ))}

@@ -14,12 +14,13 @@ type Player = {
   ints: number;
   sacks: number;
   conv: number;
+  to: number;
   photoURL: string;
 };
 
-type StatKey = "tds" | "ints" | "sacks" | "conv";
+type StatKey = "tds" | "ints" | "sacks" | "conv" | "to";
 
-const statOptions: StatKey[] = ["tds", "ints", "sacks", "conv"];
+const statOptions: StatKey[] = ["tds", "ints", "sacks", "conv", "to"];
 
 export default function StatsPage() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -44,6 +45,7 @@ export default function StatsPage() {
           sacks: d.sacks,
           conv: d.conv,
           photoURL: d.photoURL,
+          to: d.to,
         });
       });
 
