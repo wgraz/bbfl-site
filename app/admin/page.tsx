@@ -176,12 +176,14 @@ export default function AdminPage() {
           >
             Go to Admin Event
           </Link>
+          {/*}
           <Link
             href="/draft7158863"
             className="block text-center bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700"
           >
             Go to Draft Page
           </Link>
+          */}
           <Link
             href="/adminStat9319980"
             className="block text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
