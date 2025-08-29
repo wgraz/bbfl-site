@@ -86,7 +86,14 @@ export default async function SchedulePage() {
                       dateTime={week.date}
                       className="text-sm text-gray-500"
                     >
-                      {new Date(week.date).toLocaleDateString()}
+                      {new Date(week.date).toLocaleString(undefined, {
+                        weekday: "short",
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
                     </time>
                   )}
                 </div>
@@ -183,11 +190,13 @@ export default async function SchedulePage() {
                   {week.date ? (
                     <p className="text-sm text-yellow-700 mt-2 truncate">
                       Planned:{" "}
-                      {new Date(week.date).toLocaleDateString(undefined, {
+                      {new Date(week.date).toLocaleString(undefined, {
                         weekday: "short",
                         year: "numeric",
                         month: "short",
                         day: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
                       })}
                     </p>
                   ) : (
