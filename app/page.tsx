@@ -125,12 +125,14 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/admin"
-            className="group block rounded-2xl bg-gray-900 text-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
+            href="/bbflHonors"
+            className="group block rounded-2xl bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
           >
-            <h2 className="text-2xl font-bold group-hover:underline">Admin</h2>
-            <p className="text-sm text-gray-300 mt-2">
-              Private league control panel
+            <h2 className="text-2xl font-bold text-yellow-600 group-hover:underline">
+              BBFL Honors
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">
+              Veiw award races, winners, and history
             </p>
           </Link>
 
@@ -143,6 +145,16 @@ export default function Home() {
             </h2>
             <p className="text-sm text-gray-600 mt-2">
               View league rules & format
+            </p>
+          </Link>
+
+          <Link
+            href="/admin"
+            className="group block rounded-2xl bg-gray-900 text-white p-6 shadow-md hover:shadow-xl transition-all duration-300"
+          >
+            <h2 className="text-2xl font-bold group-hover:underline">Admin</h2>
+            <p className="text-sm text-gray-300 mt-2">
+              Private league control panel
             </p>
           </Link>
         </div>
