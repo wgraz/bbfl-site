@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
-import { db } from "../../lib/firebase"; // Adjust path as needed
+import { useState, useMemo, useEffect } from "react";
+import { collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
-const teams = ["team1", "team2", "team3", "team4"]; // Replace with real teams or fetch later
+type Team = { id: string; name: string };
 
-// Helper to generate round robin matchups
-function generateRoundRobinMatchups(selectedTeams: string[]) {
-  const matchups: { team1: string; team2: string }[] = [];
+type ScoreEntry = { team1Score: number; team2Score: number };
+
+function generateRoundRobinMatchups(selectedTeams: Team[]) {
+  const matchups: { team1: Team; team2: Team }[] = [];
   for (let i = 0; i < selectedTeams.length; i++) {
     for (let j = i + 1; j < selectedTeams.length; j++) {
       matchups.push({ team1: selectedTeams[i], team2: selectedTeams[j] });
@@ -18,24 +19,36 @@ function generateRoundRobinMatchups(selectedTeams: string[]) {
 }
 
 // Default league points distribution by rank (1st to 4th)
-const leaguePointsDistribution = [10, 6, 3, 1]; // sums to 8 points; adjust as needed
-
-type ScoreEntry = { team1Score: number; team2Score: number };
+const leaguePointsDistribution = [10, 6, 3, 1];
 
 export default function AdminEventPage() {
+  const [teams, setTeams] = useState<Team[]>([]);
   const [selectedWeek, setSelectedWeek] = useState(1);
-  const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
+  const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
   const [scores, setScores] = useState<{ [matchupKey: string]: ScoreEntry }>(
     {}
   );
 
-  function toggleTeam(team: string) {
+  // Load teams from Firestore
+  useEffect(() => {
+    async function fetchTeams() {
+      const snapshot = await getDocs(collection(db, "teams"));
+      const loaded = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        name: doc.data().name ?? doc.id,
+      }));
+      setTeams(loaded);
+    }
+    fetchTeams();
+  }, []);
+
+  function toggleTeam(team: Team) {
     setSelectedTeams((prev) => {
-      if (prev.includes(team)) {
-        const newSelected = prev.filter((t) => t !== team);
+      if (prev.find((t) => t.id === team.id)) {
+        const newSelected = prev.filter((t) => t.id !== team.id);
         const newScores = { ...scores };
         Object.keys(newScores).forEach((key) => {
-          if (key.includes(team)) delete newScores[key];
+          if (key.includes(team.id)) delete newScores[key];
         });
         setScores(newScores);
         return newSelected;
@@ -67,7 +80,8 @@ export default function AdminEventPage() {
     if (selectedTeams.length < 2) return [];
 
     const stats: {
-      [team: string]: {
+      [teamId: string]: {
+        name: string;
         wins: number;
         losses: number;
         pointsFor: number;
@@ -77,7 +91,8 @@ export default function AdminEventPage() {
     } = {};
 
     selectedTeams.forEach((team) => {
-      stats[team] = {
+      stats[team.id] = {
+        name: team.name,
         wins: 0,
         losses: 0,
         pointsFor: 0,
@@ -87,45 +102,41 @@ export default function AdminEventPage() {
     });
 
     matchups.forEach(({ team1, team2 }) => {
-      const key = `${team1}-${team2}`;
+      const key = `${team1.id}-${team2.id}`;
       const score = scores[key];
       if (!score) return;
 
       const { team1Score, team2Score } = score;
 
-      stats[team1].pointsFor += team1Score;
-      stats[team1].pointsAgainst += team2Score;
-      stats[team2].pointsFor += team2Score;
-      stats[team2].pointsAgainst += team1Score;
+      stats[team1.id].pointsFor += team1Score;
+      stats[team1.id].pointsAgainst += team2Score;
+      stats[team2.id].pointsFor += team2Score;
+      stats[team2.id].pointsAgainst += team1Score;
 
       if (team1Score > team2Score) {
-        stats[team1].wins += 1;
-        stats[team2].losses += 1;
+        stats[team1.id].wins += 1;
+        stats[team2.id].losses += 1;
       } else if (team2Score > team1Score) {
-        stats[team2].wins += 1;
-        stats[team1].losses += 1;
+        stats[team2.id].wins += 1;
+        stats[team1.id].losses += 1;
       }
     });
 
     selectedTeams.forEach((team) => {
-      stats[team].pointDiff = stats[team].pointsFor - stats[team].pointsAgainst;
+      stats[team.id].pointDiff =
+        stats[team.id].pointsFor - stats[team.id].pointsAgainst;
     });
 
-    const rankedTeams = selectedTeams
-      .map((team) => ({
-        team,
-        wins: stats[team].wins,
-        losses: stats[team].losses,
-        pointsFor: stats[team].pointsFor,
-        pointsAgainst: stats[team].pointsAgainst,
-        pointDiff: stats[team].pointDiff,
+    return Object.entries(stats)
+      .map(([id, s]) => ({
+        teamId: id,
+        team: s.name,
+        ...s,
       }))
       .sort((a, b) => {
         if (b.wins !== a.wins) return b.wins - a.wins;
         return b.pointDiff - a.pointDiff;
       });
-
-    return rankedTeams;
   }, [selectedTeams, matchups, scores]);
 
   const rankedWithPoints = useMemo(() => {
@@ -167,25 +178,29 @@ export default function AdminEventPage() {
     const eventData = {
       week: selectedWeek.toString(),
       date: new Date().toISOString(),
-      teams: selectedTeams,
+      teams: selectedTeams.map((t) => t.id),
       games: matchups.map(({ team1, team2 }) => ({
-        team1,
-        team2,
-        score1: scores[`${team1}-${team2}`]?.team1Score ?? 0,
-        score2: scores[`${team1}-${team2}`]?.team2Score ?? 0,
+        team1: team1.id,
+        team2: team2.id,
+        score1: scores[`${team1.id}-${team2.id}`]?.team1Score ?? 0,
+        score2: scores[`${team1.id}-${team2.id}`]?.team2Score ?? 0,
       })),
-      rankings: rankedWithPoints,
+      rankings: rankedWithPoints.map((r) => ({
+        team: r.teamId,
+        leaguePoints: r.leaguePoints,
+        wins: r.wins,
+        losses: r.losses,
+        pointDiff: r.pointDiff,
+      })),
     };
 
     try {
-      // Save event data
       await setDoc(doc(db, "events", eventDocId), eventData);
 
-      // Update each team's stats
+      // update team stats in Firestore
       for (const teamData of rankedWithPoints) {
-        const teamDocRef = doc(db, "teams", teamData.team);
+        const teamDocRef = doc(db, "teams", teamData.teamId);
         const teamSnap = await getDoc(teamDocRef);
-
         const existing = teamSnap.exists() ? teamSnap.data() : {};
 
         const updatedStats = {
@@ -202,14 +217,14 @@ export default function AdminEventPage() {
         await setDoc(teamDocRef, {
           ...existing,
           ...updatedStats,
-          name: existing.name ?? teamData.team, // fallback if name is missing
+          name: existing.name ?? teamData.team,
         });
       }
 
       alert("Event and team stats updated successfully!");
-    } catch (error) {
-      console.error("Error saving event and updating teams:", error);
-      alert("Failed to save event or update teams.");
+    } catch (err) {
+      console.error("Error saving event:", err);
+      alert("Failed to save event.");
     }
   }
 
@@ -236,14 +251,14 @@ export default function AdminEventPage() {
         <h2 className="font-semibold mb-2">Select Teams Playing This Week:</h2>
         <div className="grid grid-cols-2 gap-2">
           {teams.map((team) => (
-            <label key={team} className="inline-flex items-center space-x-2">
+            <label key={team.id} className="inline-flex items-center space-x-2">
               <input
                 type="checkbox"
-                checked={selectedTeams.includes(team)}
+                checked={!!selectedTeams.find((t) => t.id === team.id)}
                 onChange={() => toggleTeam(team)}
                 className="form-checkbox"
               />
-              <span>{team}</span>
+              <span>{team.name}</span>
             </label>
           ))}
         </div>
@@ -258,10 +273,10 @@ export default function AdminEventPage() {
         )}
 
         {matchups.map(({ team1, team2 }) => {
-          const key = `${team1}-${team2}`;
+          const key = `${team1.id}-${team2.id}`;
           return (
             <div key={key} className="flex items-center space-x-4 mb-3">
-              <span className="w-32">{team1}</span>
+              <span className="w-32">{team1.name}</span>
               <input
                 type="number"
                 min={0}
@@ -283,7 +298,7 @@ export default function AdminEventPage() {
                 }
                 className="border rounded w-20 p-1 text-center"
               />
-              <span className="w-32 text-right">{team2}</span>
+              <span className="w-32 text-right">{team2.name}</span>
             </div>
           );
         })}
@@ -310,7 +325,7 @@ export default function AdminEventPage() {
             </thead>
             <tbody>
               {rankedWithPoints.map((team, idx) => (
-                <tr key={team.team} className="text-center">
+                <tr key={team.teamId} className="text-center">
                   <td className="border border-gray-300 p-2">{idx + 1}</td>
                   <td className="border border-gray-300 p-2">{team.team}</td>
                   <td className="border border-gray-300 p-2">{team.wins}</td>
