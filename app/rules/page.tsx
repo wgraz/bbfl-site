@@ -115,9 +115,12 @@ export default function RulesPage() {
                 </strong>
               </li>
               <li>
+                <strong>Trades are allowed. Deadline: Week 6.</strong>
+              </li>
+              <li>
                 <strong>
-                  Trades are allowed and must be even (1-for-1, 2-for-2, etc.).
-                  Deadline: Week 6.
+                  Players can be dropped and added into the player pool. Roster
+                  minimum is 4 players.
                 </strong>
               </li>
               <li>
