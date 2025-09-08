@@ -19,13 +19,13 @@ export default function RulesPage() {
             </h2>
             <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>
-                <strong>Two 15-minute halves</strong>
+                <strong>Two 10-minute halves</strong>
               </li>
               <li>
                 <strong>5-minute halftime</strong>
               </li>
-              <li>3 timeouts per team per game (1 minute each)</li>
-              <li>College OT format starting from the 30-yard line</li>
+              <li>2 timeouts per team per game (1 minute each)</li>
+              <li>College OT format starting from the 15-yard line</li>
               <li>1-point conversion from the 2-yard line</li>
               <li>2-point conversion from the 7-yard line</li>
               <li>
@@ -48,9 +48,6 @@ export default function RulesPage() {
                 <strong>
                   Quarterback can scramble 10 seconds after snap of the ball
                 </strong>
-              </li>
-              <li>
-                No throwing the ball if it was already thrown forward to you
               </li>
               <li>
                 You can not advance the ball if you catch a backwards pass
